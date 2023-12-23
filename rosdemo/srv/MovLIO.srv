@@ -1,0 +1,11 @@
+float64 x
+float64 y
+float64 z
+float64 r
+int32 Mode 
+int32 Distance
+int32 Index
+int32 Status
+string[] paramValue
+---
+int32 res

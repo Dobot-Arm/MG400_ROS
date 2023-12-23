@@ -1,0 +1,11 @@
+
+float64 x
+float64 y
+float64 z
+float64 r
+int32 user
+string[] paramValue
+
+---
+
+int32 res

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+  Usage:
+    roslaunch bringup bringup.launch robot_ip:=<value>
+-->
+<launch>
+
+    <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+    <arg name="robot_ip" doc="IP of the controller" default="192.168.1.6"/>
+
+    <param name="robot_description" textfile="$(find mg400_description)/urdf/mg400_description.urdf"/>
+
+    <node name="bringup" pkg="bringup" type="bringup" output="screen">
+        <param name="joint_publish_rate" type="double" value="10"/>
+        <param name="trajectory_duration" type="double" value="0.3"/>
+        <param name="robot_ip_address" type="str" value="$(arg robot_ip)"/>
+    </node>
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mg400_description)/rviz/urdf.rviz"/>
+
+</launch>
