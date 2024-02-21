@@ -30,7 +30,7 @@ roslaunch mg400_description display.launch
 
 * **Connect the robotic arm with following command, and robot_ip is the IP address that the real arm locates**
     ```sh
-    roslaunch dobot bringup.launch robot_ip:=192.168.1.6
+    roslaunch bringup bringup.launch robot_ip:=192.168.1.6
     ```
 
 # Custom Function Development

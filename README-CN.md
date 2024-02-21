@@ -216,7 +216,7 @@ catkin_make
 
 ```sh
 source $HOME/catkin_ws/devel/setup.bash
-roslaunch bringup  bringup
+roslaunch bringup  bringup.launch
 ```
 
 ### 新打开窗口
@@ -224,7 +224,7 @@ roslaunch bringup  bringup
 ```sh
 cd  $HOME/catkin_ws
 source $HOME/catkin_ws/devel/setup.bash
-run rosdemo rosdemo
+rosrun rosdemo rosdemo
 ```
 
 #### Demo程序运行
