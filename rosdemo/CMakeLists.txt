@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.0.2)
 project(rosdemo)
 
 set(CMAKE_CXX_STANDARD 17)
-set(JSONCPP_DIR "${PROJECT_SOURCE_DIR}/json/include/nlohmann")
 
 ## 添加所需的依赖项
 find_package(catkin REQUIRED COMPONENTS
@@ -33,9 +32,10 @@ generate_messages(
 catkin_package(
   CATKIN_DEPENDS roscpp std_msgs
 )
-include_directories(${PROJECT_SOURCE_DIR}/json/include/nlohmann)
+
 ## 设置包含路径
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -43,12 +43,12 @@ include_directories(
 
 ## 声明要编译的源文件
 add_executable(${PROJECT_NAME}
-         main.cpp
-         rosDemoMG400.cpp
+         src/main.cpp
+         src/rosDemoMG400.cpp
         )
 
 ## 链接catkin和你的依赖项
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES}  jsoncpp)
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## 添加依赖项，确保服务文件和头文件被正确地编译
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

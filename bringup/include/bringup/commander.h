@@ -126,6 +126,7 @@ private:
     std::shared_ptr<TcpClient> motion_cmd_tcp_;
     std::shared_ptr<TcpClient> real_time_tcp_;
     std::shared_ptr<TcpClient> dash_board_tcp_;
+    static inline std::mutex m_mutex;
 
 public:
     explicit CR5Commander(const std::string& ip)
@@ -314,7 +315,6 @@ public:
 
     RealTimeData getRealTimeData()
     {
-        // std::unique_lock<std::mutex> lockRealTimeData(mutex_);
         return real_time_data_;
     };
 
@@ -324,6 +324,7 @@ private:
     {
         try
         {
+            std::unique_lock<std::mutex> lockSendRecvData(CR5Commander::m_mutex);
             uint32_t has_read;
             char buf[1024];
             memset(buf, 0, sizeof(buf));

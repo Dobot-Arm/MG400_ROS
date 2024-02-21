@@ -15,7 +15,7 @@
 #include <regex>
 #include <ros/ros.h>
 #include <std_msgs/String.h>
-// #include <jsoncpp/json/json.h>
+#include <nlohmann/json.hpp>
 #include <bringup/commander.h>
 #include <actionlib/server/action_server.h>
 #include <control_msgs/FollowJointTrajectoryAction.h>
@@ -25,7 +25,6 @@
 #include <bringup/ClearError.h>
 #include <bringup/ResetRobot.h>
 #include <bringup/SpeedFactor.h>
-// #include <bringup/DigitalOutputs.h>
 #include <bringup/User.h>
 #include <bringup/Tool.h>
 #include <bringup/RobotMode.h>
@@ -34,8 +33,6 @@
 #include <bringup/DOExecute.h>
 #include <bringup/ToolDO.h>
 #include <bringup/ToolDOExecute.h>
-// #include <bringup/AO.h>
-// #include <bringup/AOExecute.h>
 #include <bringup/AccJ.h>
 #include <bringup/AccL.h>
 #include <bringup/SpeedJ.h>
@@ -44,31 +41,23 @@
 #include <bringup/CP.h>
 #include <bringup/LimZ.h>
 #include <bringup/SetArmOrientation.h>
-// #include <bringup/PowerOn.h>
 #include <bringup/RunScript.h>
 #include <bringup/StopScript.h>
 #include <bringup/PauseScript.h>
 #include <bringup/ContinueScript.h>
 #include <bringup/GetHoldRegs.h>
 #include <bringup/SetHoldRegs.h>
-// #include <bringup/SetSafeSkin.h>
 #include <bringup/SetObstacleAvoid.h>
-
 #include <bringup/SetCollisionLevel.h>
 #include <bringup/EmergencyStop.h>
-
 #include <bringup/MovJ.h>
 #include <bringup/MovL.h>
 #include <bringup/Jump.h>
 #include <bringup/Arc.h>
 #include <bringup/Sync.h>
 #include <bringup/Circle.h>
-// #include <bringup/ServoJ.h>
-// #include <bringup/StartTrace.h>
 #include <bringup/StartPath.h>
-// #include <bringup/StartFCTrace.h>
 #include <bringup/MoveJog.h>
-// #include <bringup/ServoP.h>
 #include <bringup/RelMovJ.h>
 #include <bringup/RelMovL.h>
 #include <bringup/JointMovJ.h>
@@ -172,7 +161,6 @@ protected:
     bool clearError(bringup::ClearError::Request& request, bringup::ClearError::Response& response);
     bool resetRobot(bringup::ResetRobot::Request& request, bringup::ResetRobot::Response& response);
     bool speedFactor(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
-    // bool digitalOutputs(bringup::DigitalOutputs::Request& request, bringup::DigitalOutputs::Response& response); //DO
     bool getErrorID(bringup::GetErrorID::Request& request, bringup::GetErrorID::Response& response);
     bool user(bringup::User::Request& request, bringup::User::Response& response);
     bool tool(bringup::Tool::Request& request, bringup::Tool::Response& response);
@@ -182,8 +170,6 @@ protected:
     bool DOExecute(bringup::DOExecute::Request& request, bringup::DOExecute::Response& response);
     bool toolDO(bringup::ToolDO::Request& request, bringup::ToolDO::Response& response);
     bool toolDOExecute(bringup::ToolDOExecute::Request& request, bringup::ToolDOExecute::Response& response);
-    // bool AO(bringup::AO::Request& request, bringup::AO::Response& response);    //四轴无此指令
-    // bool AOExecute(bringup::AOExecute::Request& request, bringup::AOExecute::Response& response);   //四轴无此指令
     bool accJ(bringup::AccJ::Request& request, bringup::AccJ::Response& response);
     bool accL(bringup::AccL::Request& request, bringup::AccL::Response& response);
     bool speedJ(bringup::SpeedJ::Request& request, bringup::SpeedJ::Response& response);
@@ -196,7 +182,6 @@ protected:
     bool setPayload(bringup::SetPayload::Request& request, bringup::SetPayload::Response& response);
     bool positiveSolution(bringup::PositiveSolution::Request& request, bringup::PositiveSolution::Response& response);
     bool inverseSolution(bringup::InverseSolution::Request& request, bringup::InverseSolution::Response& response);
-    // bool powerOn(bringup::PowerOn::Request& request, bringup::PowerOn::Response& response);
     bool runScript(bringup::RunScript::Request& request, bringup::RunScript::Response& response);
     bool stopScript(bringup::StopScript::Request& request, bringup::StopScript::Response& response);
     bool pauseScript(bringup::PauseScript::Request& request, bringup::PauseScript::Response& response);
@@ -217,15 +202,10 @@ protected:
     bool stopDrag(bringup::StopDrag::Request& request, bringup::StopDrag::Response& response);
     bool loadSwitch(bringup::LoadSwitch::Request& request, bringup::LoadSwitch::Response& response);
 
-    // bool setSafeSkin(bringup::SetSafeSkin::Request& request, bringup::SetSafeSkin::Response& response);
     bool setObstacleAvoid(bringup::SetObstacleAvoid::Request& request, bringup::SetObstacleAvoid::Response& response);
-    //    bool getTraceStartPose(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
-    //    bool getPathStartPose(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
-    //    bool positiveSolution(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
     bool setCollisionLevel(bringup::SetCollisionLevel::Request& request,
                            bringup::SetCollisionLevel::Response& response);
-    //    bool handleTrajPoints(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
-    //    bool getSixForceData(bringup::SpeedFactor::Request& request, bringup::SpeedFactor::Response& response);
+
     bool getAngle(bringup::GetAngle::Request& request, bringup::GetAngle::Response& response);
     bool getPose(bringup::GetPose::Request& request, bringup::GetPose::Response& response);
     bool emergencyStop(bringup::EmergencyStop::Request& request, bringup::EmergencyStop::Response& response);
@@ -244,12 +224,7 @@ protected:
     bool relMovLUser(bringup::RelMovLUser::Request& request, bringup::RelMovLUser::Response& response);
     bool relJointMovJ(bringup::RelJointMovJ::Request& request, bringup::RelJointMovJ::Response& response);
     bool movJExt(bringup::MovJExt::Request& request, bringup::MovJExt::Response& response);
-    // bool servoJ(bringup::ServoJ::Request& request, bringup::ServoJ::Response& response);
-    // bool servoP(bringup::ServoP::Request& request, bringup::ServoP::Response& response);
     bool sync(bringup::Sync::Request& request, bringup::Sync::Response& response);
-    // bool startTrace(bringup::StartTrace::Request& request, bringup::StartTrace::Response& response);
-    // bool startPath(bringup::StartPath::Request& request, bringup::StartPath::Response& response);
-    // bool startFCTrace(bringup::StartFCTrace::Request& request, bringup::StartFCTrace::Response& response);
     bool moveJog(bringup::MoveJog::Request& request, bringup::MoveJog::Response& response);
     bool stopmoveJog(bringup::StopmoveJog::Request& request, bringup::StopmoveJog::Response& response);
     bool syncAll(bringup::SyncAll::Request& request, bringup::SyncAll::Response& response);
@@ -261,10 +236,10 @@ private:
     static int str2Int(const char* val);
     void pubFeedBackInfo();
     std::vector<std::string> regexRecv(std::string getRecvInfo);
-    // void feedbackHandle(const ros::TimerEvent& tm,
-    //                     actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
-    // void moveHandle(const ros::TimerEvent& tm, actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle
-    // handle);
-    // void goalHandle(actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
-    // void cancelHandle(actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
+    void feedbackHandle(const ros::TimerEvent& tm,
+                        actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
+    void moveHandle(const ros::TimerEvent& tm, actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle
+    handle);
+    void goalHandle(actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
+    void cancelHandle(actionlib::ActionServer<FollowJointTrajectoryAction>::GoalHandle handle);
 };

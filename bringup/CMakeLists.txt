@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(bringup)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-add_compile_options(-std=c++11)
+## Compile as C++17, supported in ROS Kinetic and newer
+add_compile_options(-std=c++17)
 
-set(JSONCPP_DIR "${PROJECT_SOURCE_DIR}/json/include/nlohmann")
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -203,7 +202,6 @@ include_directories(
     
 )
 
-include_directories(${PROJECT_SOURCE_DIR}/json/include/nlohmann)
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/cr_bringup.cpp
@@ -239,7 +237,6 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 target_link_libraries(${PROJECT_NAME}
         ${catkin_LIBRARIES}
         ${JSONCPP_LIBRARIES}
-        jsoncpp
         )
 			
 #############

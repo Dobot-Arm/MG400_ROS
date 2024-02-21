@@ -44,8 +44,6 @@ void MG400Robot::init()
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ClearError", &MG400Robot::clearError, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ResetRobot", &MG400Robot::resetRobot, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/SpeedFactor", &MG400Robot::speedFactor, this));
-    // server_tbl_.push_back(
-    //     control_nh_.advertiseService("/bringup/srv/DigitalOutputs", &MG400Robot::digitalOutputs, this));   //DO
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/GetErrorID", &MG400Robot::getErrorID, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/User", &MG400Robot::user, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/Tool", &MG400Robot::tool, this));
@@ -55,8 +53,6 @@ void MG400Robot::init()
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/DOExecute", &MG400Robot::DOExecute, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ToolDO", &MG400Robot::toolDO, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ToolDOExecute", &MG400Robot::toolDOExecute, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/AO", &MG400Robot::AO, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/AOExecute", &MG400Robot::AOExecute, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/AccJ", &MG400Robot::accJ, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/AccL", &MG400Robot::accL, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/SpeedJ", &MG400Robot::speedJ, this));
@@ -71,15 +67,11 @@ void MG400Robot::init()
         control_nh_.advertiseService("/bringup/srv/PositiveSolution", &MG400Robot::positiveSolution, this));
     server_tbl_.push_back(
         control_nh_.advertiseService("/bringup/srv/InverseSolution", &MG400Robot::inverseSolution, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/PowerOn", &MG400Robot::powerOn, this));
-    // //四轴无此指令
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/RunScript", &MG400Robot::runScript, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StopScript", &MG400Robot::stopScript, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/PauseScript", &MG400Robot::pauseScript, this));
     server_tbl_.push_back(
         control_nh_.advertiseService("/bringup/srv/ContinueScript", &MG400Robot::continueScript, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/SetSafeSkin", &MG400Robot::setSafeSkin, this));
-    // //四轴无此指令
     server_tbl_.push_back(
         control_nh_.advertiseService("/bringup/srv/SetObstacleAvoid", &MG400Robot::setObstacleAvoid, this));
     server_tbl_.push_back(
@@ -102,15 +94,8 @@ void MG400Robot::init()
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/RelMovLUser", &MG400Robot::relMovLUser, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/RelJointMovJ", &MG400Robot::relJointMovJ, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/MovJExt", &MG400Robot::movJExt, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ServoJ", &MG400Robot::servoJ, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/ServoP", &MG400Robot::servoP, this));  //
-    // 四轴无此指令
+
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/Sync", &MG400Robot::sync, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StartTrace", &MG400Robot::startTrace, this));
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StartPath", &MG400Robot::startPath, this));  //
-    // 四轴无此指令
-    // server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StartFCTrace", &MG400Robot::startFCTrace,
-    // this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/MoveJog", &MG400Robot::moveJog, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StopmoveJog", &MG400Robot::stopmoveJog, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/SyncAll", &MG400Robot::syncAll, this));
@@ -132,8 +117,8 @@ void MG400Robot::init()
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StartDrag", &MG400Robot::startDrag, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/StopDrag", &MG400Robot::stopDrag, this));
     server_tbl_.push_back(control_nh_.advertiseService("/bringup/srv/LoadSwitch", &MG400Robot::loadSwitch, this));
-    // registerGoalCallback(boost::bind(&MG400Robot::goalHandle, this, _1));
-    // registerCancelCallback(boost::bind(&MG400Robot::cancelHandle, this, _1));
+    registerGoalCallback(boost::bind(&MG400Robot::goalHandle, this, _1));
+    registerCancelCallback(boost::bind(&MG400Robot::cancelHandle, this, _1));
 
     pubFeedInfo = control_nh_.advertise<std_msgs::String>("/bringup/msg/FeedInfo", 1000);
 
@@ -171,86 +156,86 @@ void MG400Robot::pubFeedBackInfo()
     }
 }
 
-// void MG400Robot::feedbackHandle(const ros::TimerEvent& tm,
-//                                 ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
-// {
-//     control_msgs::FollowJointTrajectoryFeedback feedback;
+void MG400Robot::feedbackHandle(const ros::TimerEvent& tm,
+                                ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
+{
+    control_msgs::FollowJointTrajectoryFeedback feedback;
 
-//     double current_joints[6];
-//     getJointState(current_joints);
+    double current_joints[6];
+    getJointState(current_joints);
 
-//     for (uint32_t i = 0; i < 6; i++)
-//     {
-//         feedback.joint_names.push_back(std::string("joint") + std::to_string(i + 1));
-//         feedback.actual.positions.push_back(current_joints[i]);
-//         feedback.desired.positions.push_back(goal_[i]);
-//     }
+    for (uint32_t i = 0; i < 6; i++)
+    {
+        feedback.joint_names.push_back(std::string("joint") + std::to_string(i + 1));
+        feedback.actual.positions.push_back(current_joints[i]);
+        feedback.desired.positions.push_back(goal_[i]);
+    }
 
-//     handle.publishFeedback(feedback);
-// }
+    handle.publishFeedback(feedback);
+}
 
-// void MG400Robot::moveHandle(const ros::TimerEvent& tm,
-//                             ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
-// {
-//     control_msgs::FollowJointTrajectoryGoalConstPtr trajectory = handle.getGoal();
+void MG400Robot::moveHandle(const ros::TimerEvent& tm,
+                            ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
+{
+    control_msgs::FollowJointTrajectoryGoalConstPtr trajectory = handle.getGoal();
 
-//     if (index_ < trajectory->trajectory.points.size())
-//     {
-//         auto point = trajectory->trajectory.points[index_].positions;
-//         double tmp[6];
-//         for (uint32_t i = 0; i < 4; i++)
-//         {
-//             tmp[i] = point[i] * 180.0 / 3.1415926;
-//         }
+    if (index_ < trajectory->trajectory.points.size())
+    {
+        auto point = trajectory->trajectory.points[index_].positions;
+        double tmp[6];
+        for (uint32_t i = 0; i < 4; i++)
+        {
+            tmp[i] = point[i] * 180.0 / 3.1415926;
+        }
 
-//         bringup::ServoJ srv;
-//         srv.request.j1 = tmp[0];
-//         srv.request.j2 = tmp[1];
-//         srv.request.j3 = tmp[2];
-//         srv.request.j4 = tmp[3];
+        bringup::MovJ srv;
+        srv.request.x = tmp[0];
+        srv.request.y = tmp[1];
+        srv.request.z = tmp[2];
+        srv.request.r = tmp[3];
 
-//         servoJ(srv.request, srv.response);
-//         index_++;
-//     }
-//     else
-//     {
-// #define OFFSET_VAL 0.01
-//         double current_joints[6];
-//         getJointState(current_joints);
-//         if ((current_joints[0] >= goal_[0] - OFFSET_VAL) && (current_joints[0] <= goal_[0] + OFFSET_VAL) &&
-//             (current_joints[1] >= goal_[1] - OFFSET_VAL) && (current_joints[1] <= goal_[1] + OFFSET_VAL) &&
-//             (current_joints[2] >= goal_[2] - OFFSET_VAL) && (current_joints[2] <= goal_[2] + OFFSET_VAL) &&
-//             (current_joints[3] >= goal_[3] - OFFSET_VAL) && (current_joints[3] <= goal_[3] + OFFSET_VAL))
+        movJ(srv.request, srv.response);
+        index_++;
+    }
+    else
+    {
+#define OFFSET_VAL 0.01
+        double current_joints[6];
+        getJointState(current_joints);
+        if ((current_joints[0] >= goal_[0] - OFFSET_VAL) && (current_joints[0] <= goal_[0] + OFFSET_VAL) &&
+            (current_joints[1] >= goal_[1] - OFFSET_VAL) && (current_joints[1] <= goal_[1] + OFFSET_VAL) &&
+            (current_joints[2] >= goal_[2] - OFFSET_VAL) && (current_joints[2] <= goal_[2] + OFFSET_VAL) &&
+            (current_joints[3] >= goal_[3] - OFFSET_VAL) && (current_joints[3] <= goal_[3] + OFFSET_VAL))
 
-//         {
-//             timer_.stop();
-//             movj_timer_.stop();
-//             handle.setSucceeded();
-//         }
-//     }
-// }
+        {
+            timer_.stop();
+            movj_timer_.stop();
+            handle.setSucceeded();
+        }
+    }
+}
 
-// void MG400Robot::goalHandle(ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
-// {
-//     index_ = 0;
-//     for (uint32_t i = 0; i < 6; i++)
-//     {
-//         goal_[i] = handle.getGoal()->trajectory.points[handle.getGoal()->trajectory.points.size() - 1].positions[i];
-//     }
-//     timer_ = control_nh_.createTimer(ros::Duration(1.0), boost::bind(&MG400Robot::feedbackHandle, this, _1, handle));
-//     movj_timer_ = control_nh_.createTimer(ros::Duration(trajectory_duration_),
-//                                           boost::bind(&MG400Robot::moveHandle, this, _1, handle));
-//     timer_.start();
-//     movj_timer_.start();
-//     handle.setAccepted();
-// }
+void MG400Robot::goalHandle(ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
+{
+    index_ = 0;
+    for (uint32_t i = 0; i < 6; i++)
+    {
+        goal_[i] = handle.getGoal()->trajectory.points[handle.getGoal()->trajectory.points.size() - 1].positions[i];
+    }
+    timer_ = control_nh_.createTimer(ros::Duration(1.0), boost::bind(&MG400Robot::feedbackHandle, this, _1, handle));
+    movj_timer_ = control_nh_.createTimer(ros::Duration(trajectory_duration_),
+                                          boost::bind(&MG400Robot::moveHandle, this, _1, handle));
+    timer_.start();
+    movj_timer_.start();
+    handle.setAccepted();
+}
 
-// void MG400Robot::cancelHandle(ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
-// {
-//     timer_.stop();
-//     movj_timer_.stop();
-//     handle.setSucceeded();
-// }
+void MG400Robot::cancelHandle(ActionServer<control_msgs::FollowJointTrajectoryAction>::GoalHandle handle)
+{
+    timer_.stop();
+    movj_timer_.stop();
+    handle.setSucceeded();
+}
 
 void MG400Robot::getJointState(double* point)
 {
@@ -1428,23 +1413,6 @@ bool MG400Robot::movL(bringup::MovL::Request& request, bringup::MovL::Response& 
     }
 }
 
-// bool MG400Robot::servoJ(bringup::ServoJ::Request& request, bringup::ServoJ::Response& response)
-// {
-//     try
-//     {
-//         char cmd[100];
-//         sprintf(cmd, "ServoJ(%0.3f,%0.3f,%0.3f,%0.3f)", request.j1, request.j2, request.j3, request.j4);
-//         commander_->motionDoCmd(cmd, response.res);
-//         response.res = 0;
-//         return true;
-//     }
-//     catch (const TcpClientException& err)
-//     {
-//         ROS_ERROR("%s", err.what());
-//         response.res = -1;
-//         return false;
-//     }
-// }
 
 bool MG400Robot::jump(bringup::Jump::Request& request, bringup::Jump::Response& response)
 {
