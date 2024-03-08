@@ -1,3 +1,7 @@
+---
+typora-root-url: ./picture
+---
+
 # <center>MG400Robot</center>
 
 
@@ -151,19 +155,19 @@ source $HOME/catkin_ws/devel/setup.bash
 
 1.  主线程：分别对机器控制端口，运动端口，反馈端口进行连接。给机器使能，MovL移动指令等动作
 
-![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/main.png)
+![](./main.png)
 
 2.  反馈状态线程：实时反馈机器的状态信息
 
-![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/feed.png)
+![](./feed.png)
 
 3. 机器运动线程： 给机器下发运动指令
 
-![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/move.png)
+![](./move.png)
 
 4.  异常处理线程：对机器异常状态进行判断和处理动作
 
-![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/excetion.png)
+![](./excetion.png)
 
 **Demo运行的操作步骤时序如下图所示 ：**
 
@@ -177,7 +181,7 @@ source $HOME/catkin_ws/devel/setup.bash
 
    控制面板>>网络>> Internet>>网络连接  
 
-   ![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/netConnect.png)
+   ![](./netConnect.png)
 
    
 
@@ -185,13 +189,13 @@ source $HOME/catkin_ws/devel/setup.bash
 
    修改ip地址为192.168.1.X网段IP
 
-   ![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/updateIP.png)
+   ![](./updateIP.png)
 
    
 
 3. 连接上位机DobotStudio Pro，连接机器，把机器模式切换至TCP/IP模式
 
-   ![](Z:/dobot_home/4Axis/TCP-IP-4Axis-Python/picture/checkTcpMode.png)
+   ![](./checkTcpMode.png)
 
    
 
